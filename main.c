@@ -3,22 +3,33 @@
 
 const int g_fps = 60;
 int g_resetTimer = 1;
+GLuint g_dirtTexture;
+GLuint g_grassTexture;
+
+
+#define ASSERT(x) if (!(x)) { printf("Assert failed: " #x); exit(1);}
 
 
 void drawTestShape() {
+    glColor3f(1.0,1.0,1.0);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, g_dirtTexture);
+
     glBegin(GL_QUADS);
 
-    glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(0.0, 1.0, 0.0);
-    glVertex3f(1.0, 1.0, 0.0);
-    glVertex3f(1.0, 0.0, 0.0);
+    glTexCoord2d(0.0, 0.0); glVertex3f(0.0, 0.0, 0.0);
+    glTexCoord2d(1.0, 0.0); glVertex3f(0.0, 1.0, 0.0);
+    glTexCoord2d(1.0, 1.0); glVertex3f(1.0, 1.0, 0.0);
+    glTexCoord2d(0.0, 1.0); glVertex3f(1.0, 0.0, 0.0);
 
-    glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(0.0, 0.0, 1.0);
-    glVertex3f(0.0, 1.0, 1.0);
-    glVertex3f(0.0, 1.0, 0.0);
+    glTexCoord2d(0.0, 0.0); glVertex3f(0.0, 0.0, 0.0);
+    glTexCoord2d(1.0, 0.0); glVertex3f(0.0, 0.0, 1.0);
+    glTexCoord2d(1.0, 1.0); glVertex3f(0.0, 1.0, 1.0);
+    glTexCoord2d(0.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
 
     glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -72,10 +83,20 @@ int main(int argc, char **argv) {
     glutDisplayFunc(render);
     glutIdleFunc(updateTimer);
     glutTimerFunc(100, update, 0);
-
     glutKeyboardFunc(processKeys);
+
+    g_dirtTexture = loadTexture("dirt.raw", 128, 128);
+    g_grassTexture = loadTexture("grass.raw", 128, 128);
+    ASSERT(g_dirtTexture);
+    ASSERT(g_grassTexture);
+
+    glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
     glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
     glutMainLoop();
+
+    freeTexture(g_dirtTexture);
+    freeTexture(g_grassTexture);
 
     return 0;
 }
