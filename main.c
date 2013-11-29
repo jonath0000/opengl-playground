@@ -46,7 +46,7 @@ void render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    gluLookAt(10.0, 10.0, 10.0,
+    gluLookAt(3.0, 3.0, 3.0,
 	      0.0, 0.0, 0.0,
 	      0.0, 1.0, 0.0);
 
