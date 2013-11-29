@@ -1,0 +1,1 @@
+gcc main.c utils.c -lopengl32 -lglut32 -lglu32 -o glplay.exe
